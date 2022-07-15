@@ -6,36 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar" />
-
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        android:padding="4dp"
         android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/radio_search"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:textCursorDrawable="@null"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@null">
 
-        </androidx.appcompat.widget.SearchView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/word_search"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="4dp">
+
+            </androidx.appcompat.widget.SearchView>
+
+            <ImageButton
+                android:id="@+id/imageButtonAdd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:foregroundGravity="center"
+                app:srcCompat="@drawable/ic_baseline_add_24"
+                tools:layout_editor_absoluteX="276dp"
+                tools:layout_editor_absoluteY="6dp" />
+
+
+        </LinearLayout>
+
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <androidx.viewpager2.widget.ViewPager2
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.ksnk.dictionary.ui.listFragment.ListFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"

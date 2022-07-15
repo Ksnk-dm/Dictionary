@@ -1,5 +1,6 @@
 package com.ksnk.dictionary.di
 
+import com.ksnk.dictionary.ui.listFragment.ListViewModel
 import com.ksnk.dictionary.ui.main.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -7,5 +8,9 @@ import org.koin.dsl.module
 val mainViewModel= module{
     viewModel {
         MainViewModel(get())
+    }
+
+    viewModel {
+        ListViewModel(get())
     }
 }

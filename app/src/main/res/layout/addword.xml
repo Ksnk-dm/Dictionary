@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/titleID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Enter Word"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enterEngID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Enter eng"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@id/titleID" />
+
+    <EditText
+        android:id="@+id/enterTranslateID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Enter translate"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enterEngID" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupTranslate"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterTranslateID">
+
+        <RadioButton
+            android:id="@+id/radioButtonAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="вручную" />
+
+        <RadioButton
+            android:id="@+id/radioButtonEng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="с англ" />
+
+        <RadioButton
+            android:id="@+id/radioButtonTranslate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="с укр" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/addWordBtnID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="76dp"
+        android:text="Add Word"
+        app:layout_constraintStart_toStartOf="@id/enterTranslateID"
+        app:layout_constraintTop_toBottomOf="@id/enterTranslateID" />
+
+    <Button
+        android:id="@+id/cancelBtnID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="8dp"
+        android:text="cancel"
+        app:layout_constraintEnd_toEndOf="@id/enterTranslateID"
+        app:layout_constraintTop_toBottomOf="@id/enterTranslateID" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="24dp"
+        android:text="auto"
+        app:layout_constraintEnd_toStartOf="@+id/cancelBtnID"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/addWordBtnID"
+        app:layout_constraintTop_toBottomOf="@+id/enterTranslateID" />
+</androidx.constraintlayout.widget.ConstraintLayout>

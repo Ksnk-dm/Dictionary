@@ -69,6 +69,8 @@ dependencies {
     testImplementation "io.insert-koin:koin-test:$koin_version"
 
     implementation "io.insert-koin:koin-android:$koin_version"
+
+    implementation 'com.google.mlkit:translate:17.0.0'
 //    implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
 //    implementation 'io.insert-koin:koin-androidx-scope:3.2.0'
 ////
