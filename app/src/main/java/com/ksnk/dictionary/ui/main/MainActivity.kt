@@ -10,12 +10,14 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
+import com.ksnk.dictionary.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
 import kotlinx.android.synthetic.main.addword.*
@@ -26,15 +28,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     var translator: Translator? = null
     private val mainViewModel: MainViewModel by viewModel()
     private var imageButtonAdd: ImageButton? = null
     var textToSpeech: TextToSpeech? = null
+    var searchView: SearchView? = null
+    private var fragmentSettingListener: FragmentSettingListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        searchView = findViewById(R.id.word_search)
+        searchView?.setOnQueryTextListener(this)
         imageButtonAdd = findViewById(R.id.imageButtonAdd)
         imageButtonAdd?.setOnClickListener { showDialogBox() }
         textToSpeech = TextToSpeech(applicationContext) { i ->
@@ -64,19 +70,18 @@ class MainActivity : AppCompatActivity() {
 //            )
 //        }
 
-        mainViewModel.getAllWords().observe(this, Observer {
-            Log.d("dfdff", it.toString())
-        })
+
     }
 
+    var addDialog: AlertDialog? = null
     private fun showDialogBox() {
         val viewLayout = LayoutInflater.from(this).inflate(R.layout.addword, null)
-        val addDialog: AlertDialog = AlertDialog.Builder(this).create()
-        addDialog.setView(viewLayout)
-        addDialog.show()
-        addDialog.addWordBtnID.setOnClickListener {
-            val engWord = addDialog.enterEngID.text.toString().trim()
-            val wordTranslate = addDialog.enterTranslateID.text.toString().trim()
+        addDialog = AlertDialog.Builder(this).create()
+        addDialog?.setView(viewLayout)
+        addDialog?.show()
+        addDialog?.addWordBtnID?.setOnClickListener {
+            val engWord = addDialog?.enterEngID?.text.toString().trim()
+            val wordTranslate = addDialog?.enterTranslateID?.text.toString().trim()
             if (engWord.isNotEmpty() && wordTranslate.isNotEmpty()) {
                 CoroutineScope(Dispatchers.IO).launch {
                     mainViewModel.addWord(
@@ -87,89 +92,59 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
-                addDialog.dismiss()
+                addDialog?.dismiss()
             } else {
                 Toast.makeText(this, "Please enter both field", Toast.LENGTH_SHORT).show()
             }
         }
-        addDialog.cancelBtnID.setOnClickListener {
-            addDialog.dismiss()
+        addDialog?.cancelBtnID?.setOnClickListener {
+            addDialog?.dismiss()
         }
 
-        addDialog.radioGroupTranslate.setOnCheckedChangeListener { _, i ->
+        addDialog?.radioGroupTranslate?.setOnCheckedChangeListener { _, i ->
             when (i) {
                 R.id.radioButtonAll -> {
-                    addDialog.enterTranslateID.isEnabled = true
-                    addDialog.enterEngID.isEnabled = true
-                    addDialog.enterTranslateID.text.clear()
-                    addDialog.enterEngID.text.clear()
+                    addDialog?.enterTranslateID?.isEnabled = true
+                    addDialog?.enterEngID?.isEnabled = true
+                    addDialog?.enterTranslateID?.text?.clear()
+                    addDialog?.enterEngID?.text?.clear()
+                    addDialog?.enterEngID?.removeTextChangedListener(textWatcher)
+                    addDialog?.enterTranslateID?.removeTextChangedListener(textWatcher2)
                 }
                 R.id.radioButtonTranslate -> {
-                    addDialog.enterEngID.isEnabled = false
-                    addDialog.enterTranslateID.isEnabled = true
-                    addDialog.enterTranslateID.text.clear()
-                    addDialog.enterEngID.text.clear()
+                    addDialog?.enterEngID?.isEnabled = false
+                    addDialog?.enterTranslateID?.isEnabled = true
+                    addDialog?.enterTranslateID?.text?.clear()
+                    addDialog?.enterEngID?.text?.clear()
                     val translationConfigs = TranslatorOptions.Builder()
                         .setSourceLanguage(TranslateLanguage.RUSSIAN)
                         .setTargetLanguage(TranslateLanguage.ENGLISH)
                         .build()
                     translator = Translation.getClient(translationConfigs)
-                    addDialog.enterTranslateID.addTextChangedListener(object : TextWatcher {
-                        override fun afterTextChanged(s: Editable?) {
-                        }
-
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                        }
-
-                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                            translator?.translate(addDialog.enterTranslateID.text.toString())
-                                ?.addOnSuccessListener {
-                                    addDialog.enterEngID.setText(it)
-                                }
-                                ?.addOnFailureListener {
-                                    it.printStackTrace()
-                                }
-                        }
-                    })
-
+                    addDialog?.enterTranslateID?.addTextChangedListener(textWatcher2)
+                    addDialog?.enterEngID?.removeTextChangedListener(textWatcher)
 
                 }
                 R.id.radioButtonEng -> {
-                    addDialog.enterTranslateID.isEnabled = false
-                    addDialog.enterEngID.isEnabled = true
-                    addDialog.enterTranslateID.text.clear()
-                    addDialog.enterEngID.text.clear()
+                    addDialog?.enterTranslateID?.isEnabled = false
+                    addDialog?.enterEngID?.isEnabled = true
+                    addDialog?.enterTranslateID?.text?.clear()
+                    addDialog?.enterEngID?.text?.clear()
                     val translationConfigs = TranslatorOptions.Builder()
                         .setSourceLanguage(TranslateLanguage.ENGLISH)
                         .setTargetLanguage(TranslateLanguage.RUSSIAN)
                         .build()
                     translator = Translation.getClient(translationConfigs)
-                    addDialog.enterEngID.addTextChangedListener(object : TextWatcher {
-                        override fun afterTextChanged(s: Editable?) {
-                        }
-
-                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                        }
-
-                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                            translator?.translate(addDialog.enterEngID.text.toString())
-                                ?.addOnSuccessListener {
-                                    addDialog.enterTranslateID.setText(it)
-                                }
-                                ?.addOnFailureListener {
-                                    it.printStackTrace()
-                                }
-                        }
-                    })
-
+                    addDialog?.enterEngID?.addTextChangedListener(textWatcher)
+                    addDialog?.enterTranslateID?.removeTextChangedListener(textWatcher2)
                 }
             }
         }
 
 
 
-        addDialog.button.setOnClickListener {
-            if (addDialog.enterEngID.text.isNotEmpty()) {
+        addDialog?.button?.setOnClickListener {
+            if (addDialog?.enterEngID?.text!!.isNotEmpty()) {
                 translator?.downloadModelIfNeeded()
                     ?.addOnSuccessListener {
                         Toast.makeText(this, "Download Successful", Toast.LENGTH_SHORT).show()
@@ -177,9 +152,9 @@ class MainActivity : AppCompatActivity() {
                     ?.addOnFailureListener {
                         Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
                     }
-                translator?.translate(addDialog.enterEngID.text.toString())
+                translator?.translate(addDialog?.enterEngID?.text.toString())
                     ?.addOnSuccessListener {
-                        addDialog.enterTranslateID.setText(it)
+                        addDialog?.enterTranslateID?.setText(it)
                     }
                     ?.addOnFailureListener {
                         it.printStackTrace()
@@ -190,7 +165,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val textWatcher = object :TextWatcher {
+    private val textWatcher2 = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
 
         override fun beforeTextChanged(
@@ -207,7 +182,55 @@ class MainActivity : AppCompatActivity() {
             before: Int,
             count: Int
         ) {
-            //Do stuff
+            translator?.translate(addDialog?.enterTranslateID?.text.toString())
+                ?.addOnSuccessListener {
+                    addDialog?.enterEngID?.setText(it)
+                }
+                ?.addOnFailureListener {
+                    it.printStackTrace()
+                }
         }
     }
+
+    private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+
+        override fun beforeTextChanged(
+            s: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            s: CharSequence?,
+            start: Int,
+            before: Int,
+            count: Int
+        ) {
+            translator?.translate(addDialog?.enterEngID?.text.toString())
+                ?.addOnSuccessListener {
+                    addDialog?.enterTranslateID?.setText(it)
+                }
+                ?.addOnFailureListener {
+                    it.printStackTrace()
+                }
+        }
     }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if (query != null) {
+            fragmentSettingListener?.search(query)
+        }
+        return true
+    }
+
+    fun setSettingListener(fragmentSettingListener: FragmentSettingListener) {
+        this.fragmentSettingListener = fragmentSettingListener
+    }
+}

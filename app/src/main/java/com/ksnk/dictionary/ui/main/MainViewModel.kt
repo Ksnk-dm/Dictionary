@@ -12,4 +12,12 @@ class MainViewModel(private val wordRepository: WordRepository) : ViewModel() {
         wordRepository.insertWord(userAdd)
     }
 
+    fun searchDatabase(searchQuery: String): LiveData<List<Word>> {
+        return wordRepository.searchDatabase(searchQuery)
+    }
+
+    fun deleteWord(word: Word){
+        wordRepository.deleteWord(word)
+    }
+
 }
