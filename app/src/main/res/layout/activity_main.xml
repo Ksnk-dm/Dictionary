@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/teal_200"
+        android:background="@color/color_tool_bar"
         android:minHeight="?attr/actionBarSize"
         android:padding="4dp"
         android:theme="?attr/actionBarTheme"
@@ -55,21 +56,21 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
 
-
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="com.ksnk.dictionary.ui.listFragment.ListFragment"
+        android:id="@+id/fragmentContainerViewMain"
+        android:name="com.ksnk.dictionary.ui.listFragment.ListWordFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="411dp"
+        android:id="@+id/bottomNavigationViewMain"
+        android:layout_width="0dp"
         android:layout_height="55dp"
+        android:background="@color/color_tool_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

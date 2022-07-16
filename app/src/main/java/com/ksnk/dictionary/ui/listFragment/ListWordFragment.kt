@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ListFragment : Fragment(), FragmentSettingListener {
+class ListWordFragment : Fragment(), FragmentSettingListener {
     private val listViewModel: ListViewModel by viewModel()
     private lateinit var wordList: MutableList<Word>
     private lateinit var listAdapter: ListAdapter
@@ -113,7 +113,7 @@ class ListFragment : Fragment(), FragmentSettingListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity?)?.setSettingListener(this@ListFragment)
+        (activity as MainActivity?)?.setSettingListener(this@ListWordFragment)
     }
 
     private fun searchDatabase(query: String) {
@@ -133,6 +133,10 @@ class ListFragment : Fragment(), FragmentSettingListener {
             }
         }
     }
+    companion object
 
+    fun newInstance(): ListWordFragment {
+        return ListWordFragment()
+    }
 
 }

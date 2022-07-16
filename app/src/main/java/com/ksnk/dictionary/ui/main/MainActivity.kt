@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
@@ -20,6 +21,8 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 import com.ksnk.dictionary.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
+import com.ksnk.dictionary.ui.listFragment.ListWordFragment
+import com.ksnk.dictionary.ui.translateFragment.TranslateFragment
 import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,11 +38,41 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     var textToSpeech: TextToSpeech? = null
     var searchView: SearchView? = null
     private var fragmentSettingListener: FragmentSettingListener? = null
+    private var bottomNavView: BottomNavigationView? = null
+
+    private var bottomNavViewOnItemSelectListener = NavigationBarView.OnItemSelectedListener {
+        when (it.itemId) {
+            R.id.translate_item -> {
+                val fragment: Fragment = TranslateFragment()
+                val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragmentContainerViewMain, fragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+            R.id.list_item -> {
+                val fragment: Fragment = ListWordFragment().newInstance()
+                val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragmentContainerViewMain, fragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+            R.id.setting_item -> {
+//                createSettingFragment()
+//                loadPageAds()
+//                searchImageButton.visibility = View.INVISIBLE
+            }
+        }
+        return@OnItemSelectedListener true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         searchView = findViewById(R.id.word_search)
+        bottomNavView = findViewById(R.id.bottomNavigationViewMain)
+
+        bottomNavView?.setOnItemSelectedListener(bottomNavViewOnItemSelectListener)
+
         searchView?.setOnQueryTextListener(this)
         imageButtonAdd = findViewById(R.id.imageButtonAdd)
         imageButtonAdd?.setOnClickListener { showDialogBox() }
@@ -75,6 +108,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     var addDialog: AlertDialog? = null
     private fun showDialogBox() {
+        translator?.downloadModelIfNeeded()
+            ?.addOnSuccessListener {
+            }
+            ?.addOnFailureListener {
+            }
         val viewLayout = LayoutInflater.from(this).inflate(R.layout.addword, null)
         addDialog = AlertDialog.Builder(this).create()
         addDialog?.setView(viewLayout)
@@ -117,7 +155,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                     addDialog?.enterTranslateID?.text?.clear()
                     addDialog?.enterEngID?.text?.clear()
                     val translationConfigs = TranslatorOptions.Builder()
-                        .setSourceLanguage(TranslateLanguage.RUSSIAN)
+                        .setSourceLanguage(TranslateLanguage.UKRAINIAN)
                         .setTargetLanguage(TranslateLanguage.ENGLISH)
                         .build()
                     translator = Translation.getClient(translationConfigs)
@@ -132,36 +170,13 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                     addDialog?.enterEngID?.text?.clear()
                     val translationConfigs = TranslatorOptions.Builder()
                         .setSourceLanguage(TranslateLanguage.ENGLISH)
-                        .setTargetLanguage(TranslateLanguage.RUSSIAN)
+                        .setTargetLanguage(TranslateLanguage.UKRAINIAN)
                         .build()
                     translator = Translation.getClient(translationConfigs)
                     addDialog?.enterEngID?.addTextChangedListener(textWatcher)
                     addDialog?.enterTranslateID?.removeTextChangedListener(textWatcher2)
                 }
             }
-        }
-
-
-
-        addDialog?.button?.setOnClickListener {
-            if (addDialog?.enterEngID?.text!!.isNotEmpty()) {
-                translator?.downloadModelIfNeeded()
-                    ?.addOnSuccessListener {
-                        Toast.makeText(this, "Download Successful", Toast.LENGTH_SHORT).show()
-                    }
-                    ?.addOnFailureListener {
-                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
-                    }
-                translator?.translate(addDialog?.enterEngID?.text.toString())
-                    ?.addOnSuccessListener {
-                        addDialog?.enterTranslateID?.setText(it)
-                    }
-                    ?.addOnFailureListener {
-                        it.printStackTrace()
-                    }
-            }
-
-
         }
     }
 

@@ -71,11 +71,6 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koin_version"
 
     implementation 'com.google.mlkit:translate:17.0.0'
-//    implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
-//    implementation 'io.insert-koin:koin-androidx-scope:3.2.0'
-////
-////    // Koin AndroidX ViewModel features
-////    implementation 'org.koin:koin-androidx-viewmodel:2.0.1'
-//// Koin AndroidX Experimental features
-//    implementation "io.insert-koin:koin-android-ext:$koin_version"
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }
