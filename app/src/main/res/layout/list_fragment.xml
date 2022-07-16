@@ -8,76 +8,124 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
 
 
             <RadioGroup
-                android:id="@+id/rgTask"
+                android:id="@+id/rgSort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_border"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rbBlue"
+                    android:id="@+id/rbLast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_blue"
+                    android:background="@drawable/bg_button_left"
                     android:button="@android:color/transparent"
+                    android:checked="true"
                     android:gravity="center"
+                    android:paddingStart="5dp"
                     android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
                     android:paddingBottom="5dp"
                     android:singleLine="true"
-                    android:text="a...z"
-                    android:textSize="22sp" />
+                    android:text="Останні"
+                    android:textSize="12sp" />
 
                 <View
-                    android:id="@+id/vSep1"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#0000FF"
+                    android:background="@color/wb_text"
                     android:visibility="visible" />
 
                 <RadioButton
-                    android:id="@+id/rbGreen"
+                    android:id="@+id/rbEngAsc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_green"
+                    android:background="@drawable/bg_button_center"
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:singleLine="true"
-                    android:text="z...a"
-                    android:textSize="22sp" />
+                    android:text="A...Z"
+                    android:textSize="12sp" />
 
                 <View
-                    android:id="@+id/vSep2"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#0000FF"
+                    android:background="@color/wb_text"
                     android:visibility="visible" />
 
                 <RadioButton
-                    android:id="@+id/rbRed"
+                    android:id="@+id/rbEngDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_red"
+                    android:background="@drawable/bg_button_center"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="5dp"
+                    android:singleLine="true"
+                    android:text="Z...A"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/wb_text"
+                    android:visibility="visible" />
+
+                <RadioButton
+                    android:id="@+id/rbUkrAsc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_center"
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:singleLine="true"
-                    android:text="new"
-                    android:textSize="22sp" />
+                    android:text="А...Я"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/wb_text"
+                    android:visibility="visible" />
+
+                <RadioButton
+                    android:id="@+id/rbUkrDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_right"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:singleLine="true"
+                    android:text="Я...А"
+                    android:textSize="12sp" />
             </RadioGroup>
         </LinearLayout>
     </HorizontalScrollView>

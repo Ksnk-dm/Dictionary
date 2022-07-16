@@ -18,4 +18,19 @@ interface WordDao {
 
     @Query("SELECT * FROM wordTable WHERE wordEng LIKE :searchQuery OR wordTranslate LIKE :searchQuery")
     fun searchDatabase(searchQuery: String): LiveData<List<Word>>
+
+    @Query("SELECT * FROM wordTable ORDER BY LOWER(wordEng) ASC ")
+    fun getAllEngAsc(): LiveData<List<Word>>
+
+    @Query("SELECT * FROM wordTable ORDER BY LOWER(wordTranslate) ASC ")
+    fun getAllUkrAsc(): LiveData<List<Word>>
+
+    @Query("SELECT * FROM wordTable ORDER BY LOWER(wordEng) DESC ")
+    fun getAllEngDesc(): LiveData<List<Word>>
+
+    @Query("SELECT * FROM wordTable ORDER BY LOWER(wordTranslate) DESC ")
+    fun getAllUrkDesc(): LiveData<List<Word>>
+
+    @Query("SELECT * FROM wordTable ORDER BY wordID DESC ")
+    fun getAllDesc(): LiveData<List<Word>>
 }

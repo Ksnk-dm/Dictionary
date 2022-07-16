@@ -45,6 +45,9 @@ class ListAdapter(private val wordList: List<Word>, context: Context) :
         holder.imageButtonPlay.setOnClickListener {
             textToSpeech?.speak(wordList[position].wordEng, TextToSpeech.QUEUE_FLUSH, null, null)
         }
+        holder.itemView.setOnClickListener {
+            textToSpeech?.speak(wordList[position].wordEng, TextToSpeech.QUEUE_FLUSH, null, null)
+        }
     }
 
     override fun getItemCount(): Int = wordList.size

@@ -22,6 +22,7 @@ import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.ui.listFragment.ListWordFragment
+import com.ksnk.dictionary.ui.settingsFragment.SettingsFragment
 import com.ksnk.dictionary.ui.translateFragment.TranslateFragment
 import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
@@ -32,50 +33,25 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
-    var translator: Translator? = null
+    private var translator: Translator? = null
     private val mainViewModel: MainViewModel by viewModel()
     private var imageButtonAdd: ImageButton? = null
-    var textToSpeech: TextToSpeech? = null
-    var searchView: SearchView? = null
+    private var textToSpeech: TextToSpeech? = null
+    private var searchView: SearchView? = null
     private var fragmentSettingListener: FragmentSettingListener? = null
     private var bottomNavView: BottomNavigationView? = null
+    private var addDialog: AlertDialog? = null
 
-    private var bottomNavViewOnItemSelectListener = NavigationBarView.OnItemSelectedListener {
-        when (it.itemId) {
-            R.id.translate_item -> {
-                val fragment: Fragment = TranslateFragment()
-                val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.fragmentContainerViewMain, fragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
-            }
-            R.id.list_item -> {
-                val fragment: Fragment = ListWordFragment().newInstance()
-                val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.fragmentContainerViewMain, fragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
-            }
-            R.id.setting_item -> {
-//                createSettingFragment()
-//                loadPageAds()
-//                searchImageButton.visibility = View.INVISIBLE
-            }
-        }
-        return@OnItemSelectedListener true
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        searchView = findViewById(R.id.word_search)
-        bottomNavView = findViewById(R.id.bottomNavigationViewMain)
+        init()
+        setListeners()
+        checkTextSpeechSupportLang()
+    }
 
-        bottomNavView?.setOnItemSelectedListener(bottomNavViewOnItemSelectListener)
-
-        searchView?.setOnQueryTextListener(this)
-        imageButtonAdd = findViewById(R.id.imageButtonAdd)
-        imageButtonAdd?.setOnClickListener { showDialogBox() }
+    private fun checkTextSpeechSupportLang() {
         textToSpeech = TextToSpeech(applicationContext) { i ->
             if (i == TextToSpeech.SUCCESS) {
                 val lang = textToSpeech!!.setLanguage(Locale.US)
@@ -86,27 +62,24 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         Toast.LENGTH_SHORT
                     )
                         .show()
-                } else {
-                    Toast.makeText(this@MainActivity, "Language Supported", Toast.LENGTH_SHORT)
-                        .show()
                 }
             }
         }
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            mainViewModel.addWord(
-//                Word(
-//                    0,
-//                    wordEng = "read",
-//                    wordTranslate = "читать"
-//                )
-//            )
-//        }
-
-
     }
 
-    var addDialog: AlertDialog? = null
+    private fun init() {
+        searchView = findViewById(R.id.word_search)
+        bottomNavView = findViewById(R.id.bottomNavigationViewMain)
+        imageButtonAdd = findViewById(R.id.imageButtonAdd)
+    }
+
+    private fun setListeners() {
+        bottomNavView?.setOnItemSelectedListener(bottomNavViewOnItemSelectListener)
+        searchView?.setOnQueryTextListener(this)
+        imageButtonAdd?.setOnClickListener { showDialogBox() }
+    }
+
+
     private fun showDialogBox() {
         translator?.downloadModelIfNeeded()
             ?.addOnSuccessListener {
@@ -247,5 +220,34 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     fun setSettingListener(fragmentSettingListener: FragmentSettingListener) {
         this.fragmentSettingListener = fragmentSettingListener
+    }
+
+    override fun onBackPressed() {
+        //  super.onBackPressed()
+    }
+
+    private fun changeFragment(fragment: Fragment) {
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainerViewMain, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private var bottomNavViewOnItemSelectListener = NavigationBarView.OnItemSelectedListener {
+        when (it.itemId) {
+            R.id.translate_item -> {
+                val fragment: Fragment = TranslateFragment()
+                changeFragment(fragment)
+            }
+            R.id.list_item -> {
+                val fragment: Fragment = ListWordFragment().newInstance()
+                changeFragment(fragment)
+            }
+            R.id.setting_item -> {
+                val fragment: Fragment = SettingsFragment()
+                changeFragment(fragment)
+            }
+        }
+        return@OnItemSelectedListener true
     }
 }

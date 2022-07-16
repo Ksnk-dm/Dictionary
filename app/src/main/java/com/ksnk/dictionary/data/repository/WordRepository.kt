@@ -23,4 +23,24 @@ class WordRepository(private val wordDao: WordDao) {
     fun searchDatabase(searchQuery: String): LiveData<List<Word>> {
         return wordDao.searchDatabase(searchQuery)
     }
+
+    fun getAllEngAsc():LiveData<List<Word>>{
+        return wordDao.getAllEngAsc()
+    }
+
+    fun getAllUrkAsc():LiveData<List<Word>>{
+        return wordDao.getAllUkrAsc()
+    }
+
+    fun getAllEngDesc():LiveData<List<Word>>{
+        return wordDao.getAllEngDesc()
+    }
+
+    fun getAllUkrDesc():LiveData<List<Word>>{
+        return wordDao.getAllUrkDesc()
+    }
+
+    fun getAllDesc():LiveData<List<Word>>{
+        return wordDao.getAllDesc()
+    }
 }

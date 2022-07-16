@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
@@ -14,6 +15,7 @@ import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.ui.listFragment.adapter.ListAdapter
 import com.ksnk.dictionary.ui.main.MainActivity
+import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +28,9 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
     private lateinit var listAdapter: ListAdapter
     private var mGridLayoutManager: GridLayoutManager? = null
     private var listRecyclerView: RecyclerView? = null
+    private var radioGroupSort: RadioGroup? = null
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,13 +42,90 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listRecyclerView = view.findViewById(R.id.listRecyclerView)
+        radioGroupSort = view.findViewById(R.id.rgSort)
+
+        radioGroupSort?.setOnCheckedChangeListener { _, i ->
+            when (i) {
+                R.id.rbLast -> {
+                    listViewModel.getAllDesc().observe(viewLifecycleOwner, Observer {
+                        if (it.isNotEmpty()) {
+                            wordList.clear()
+                            wordList.addAll(it)
+                            listAdapter.notifyDataSetChanged()
+                        } else {
+                            wordList.clear()
+                            listAdapter.notifyDataSetChanged()
+
+                        }
+                    })
+
+                }
+                R.id.rbEngAsc -> {
+                    listViewModel.getAllEngAsc().observe(viewLifecycleOwner, Observer {
+                        if (it.isNotEmpty()) {
+                            wordList.clear()
+                            wordList.addAll(it)
+                            listAdapter.notifyDataSetChanged()
+                        } else {
+                            wordList.clear()
+                            listAdapter.notifyDataSetChanged()
+
+                        }
+                    })
+                }
+                R.id.rbEngDesc -> {
+                    listViewModel.getAllEngDesc().observe(viewLifecycleOwner, Observer {
+                        if (it.isNotEmpty()) {
+                            wordList.clear()
+                            wordList.addAll(it)
+                            listAdapter.notifyDataSetChanged()
+                        } else {
+                            wordList.clear()
+                            listAdapter.notifyDataSetChanged()
+
+                        }
+                    })
+                }
+                R.id.rbUkrAsc -> {
+                    listViewModel.getAllUkrAsc().observe(viewLifecycleOwner, Observer {
+                        if (it.isNotEmpty()) {
+                            wordList.clear()
+                            wordList.addAll(it)
+                            listAdapter.notifyDataSetChanged()
+                        } else {
+                            wordList.clear()
+                            listAdapter.notifyDataSetChanged()
+
+                        }
+                    })
+
+                }
+                R.id.rbUkrDesc -> {
+                    listViewModel.getAllUkrDesc().observe(viewLifecycleOwner, Observer {
+                        if (it.isNotEmpty()) {
+                            wordList.clear()
+                            wordList.addAll(it)
+                            listAdapter.notifyDataSetChanged()
+                        } else {
+                            wordList.clear()
+                            listAdapter.notifyDataSetChanged()
+
+                        }
+                    })
+                }
+
+
+            }
+        }
+
+
         wordList = ArrayList()
         mGridLayoutManager = GridLayoutManager(activity, 1)
         listAdapter = ListAdapter(wordList, requireContext())
         listRecyclerView?.adapter = listAdapter
         listRecyclerView?.layoutManager = mGridLayoutManager
         listRecyclerView?.setHasFixedSize(true)
-        listViewModel.getAllWords().observe(viewLifecycleOwner, Observer {
+        listViewModel.getAllDesc().observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 wordList.clear()
                 wordList.addAll(it)
@@ -54,15 +136,6 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
 
             }
         })
-//        CoroutineScope(Dispatchers.IO).launch {
-//            listViewModel.addWord(
-//                Word(
-//                    0,
-//                    wordEng = "read",
-//                    wordTranslate = "читать"
-//                )
-//            )
-//        }
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -88,7 +161,7 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
 
                 Snackbar.make(
                     listRecyclerView!!,
-                    "Deleted " + deletedWord.wordID,
+                    "Deleted " + deletedWord.wordEng,
                     Snackbar.LENGTH_LONG
                 )
                     .setAction(
@@ -98,7 +171,8 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
                             CoroutineScope(Dispatchers.IO).launch {
                                 listViewModel.addWord(
                                     deletedWord
-                                )}
+                                )
+                            }
                             listAdapter.notifyItemInserted(position)
                         }).show()
             }
@@ -118,7 +192,6 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
 
     private fun searchDatabase(query: String) {
         val searchQuery = "%$query%"
-
         listViewModel.searchDatabase(searchQuery).observe(this) {
             Log.d("ddddd", it.toString())
             if (it.isNotEmpty()) {
@@ -133,6 +206,7 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
             }
         }
     }
+
     companion object
 
     fun newInstance(): ListWordFragment {

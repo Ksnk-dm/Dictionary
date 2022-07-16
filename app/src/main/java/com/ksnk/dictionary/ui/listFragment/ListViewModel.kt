@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.data.repository.WordRepository
 
-class ListViewModel(private val wordRepository: WordRepository): ViewModel() {
+class ListViewModel(private val wordRepository: WordRepository) : ViewModel() {
     fun getAllWords(): LiveData<List<Word>> = wordRepository.getAllWords()
 
     fun addWord(userAdd: Word) {
@@ -16,7 +16,17 @@ class ListViewModel(private val wordRepository: WordRepository): ViewModel() {
         return wordRepository.searchDatabase(searchQuery)
     }
 
-    fun deleteWord(word: Word){
+    fun deleteWord(word: Word) {
         wordRepository.deleteWord(word)
     }
+
+    fun getAllEngAsc(): LiveData<List<Word>> = wordRepository.getAllEngAsc()
+
+    fun getAllUkrAsc(): LiveData<List<Word>> = wordRepository.getAllUrkAsc()
+
+    fun getAllEngDesc(): LiveData<List<Word>> = wordRepository.getAllEngDesc()
+
+    fun getAllUkrDesc(): LiveData<List<Word>> = wordRepository.getAllUkrDesc()
+
+    fun getAllDesc(): LiveData<List<Word>> = wordRepository.getAllDesc()
 }
