@@ -32,6 +32,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:textCursorDrawable="@null"
+                app:defaultQueryHint="пошук"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@null"
                 tools:layout_editor_absoluteX="16dp"

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
-import com.ksnk.dictionary.FragmentSettingListener
+import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.ui.listFragment.adapter.ListAdapter

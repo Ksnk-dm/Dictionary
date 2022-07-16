@@ -18,7 +18,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import com.ksnk.dictionary.FragmentSettingListener
+import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.ui.listFragment.ListWordFragment

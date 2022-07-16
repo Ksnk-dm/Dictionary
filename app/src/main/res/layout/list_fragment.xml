@@ -6,6 +6,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+
+            <RadioGroup
+                android:id="@+id/rgTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_border"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/rbBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_blue"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:singleLine="true"
+                    android:text="a...z"
+                    android:textSize="22sp" />
+
+                <View
+                    android:id="@+id/vSep1"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#0000FF"
+                    android:visibility="visible" />
+
+                <RadioButton
+                    android:id="@+id/rbGreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_green"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:singleLine="true"
+                    android:text="z...a"
+                    android:textSize="22sp" />
+
+                <View
+                    android:id="@+id/vSep2"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#0000FF"
+                    android:visibility="visible" />
+
+                <RadioButton
+                    android:id="@+id/rbRed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_red"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:singleLine="true"
+                    android:text="new"
+                    android:textSize="22sp" />
+            </RadioGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"
         android:layout_width="match_parent"
