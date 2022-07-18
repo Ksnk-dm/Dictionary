@@ -1,5 +1,6 @@
 package com.ksnk.dictionary.ui.main
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.Editable
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationBarView
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private var fragmentSettingListener: FragmentSettingListener? = null
     private var bottomNavView: BottomNavigationView? = null
     private var addDialog: AlertDialog? = null
+    private var floatingActionButtonMain: FloatingActionButton? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setListeners()
         checkTextSpeechSupportLang()
     }
+
 
     private fun checkTextSpeechSupportLang() {
         textToSpeech = TextToSpeech(applicationContext) { i ->
@@ -70,13 +74,15 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun init() {
         searchView = findViewById(R.id.word_search)
         bottomNavView = findViewById(R.id.bottomNavigationViewMain)
-        imageButtonAdd = findViewById(R.id.imageButtonAdd)
+        //  imageButtonAdd = findViewById(R.id.imageButtonAdd)
+        floatingActionButtonMain = findViewById(R.id.floatingActionButtonMain)
     }
 
     private fun setListeners() {
         bottomNavView?.setOnItemSelectedListener(bottomNavViewOnItemSelectListener)
         searchView?.setOnQueryTextListener(this)
-        imageButtonAdd?.setOnClickListener { showDialogBox() }
+        floatingActionButtonMain?.setOnClickListener { showDialogBox() }
+        // imageButtonAdd?.setOnClickListener { showDialogBox() }
     }
 
 
@@ -238,14 +244,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             R.id.translate_item -> {
                 val fragment: Fragment = TranslateFragment()
                 changeFragment(fragment)
+                floatingActionButtonMain?.hide()
             }
             R.id.list_item -> {
                 val fragment: Fragment = ListWordFragment().newInstance()
                 changeFragment(fragment)
+                floatingActionButtonMain?.show()
             }
             R.id.setting_item -> {
                 val fragment: Fragment = SettingsFragment()
                 changeFragment(fragment)
+                floatingActionButtonMain?.hide()
             }
         }
         return@OnItemSelectedListener true

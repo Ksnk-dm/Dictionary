@@ -19,40 +19,23 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
-
-        <LinearLayout
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/word_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/word_search"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:textCursorDrawable="@null"
-                app:defaultQueryHint="пошук"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@null"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="4dp">
-
-            </androidx.appcompat.widget.SearchView>
-
-            <ImageButton
-                android:id="@+id/imageButtonAdd"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:foregroundGravity="center"
-                app:srcCompat="@drawable/ic_baseline_add_24"
-                tools:layout_editor_absoluteX="276dp"
-                tools:layout_editor_absoluteY="6dp" />
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textCursorDrawable="@null"
+            app:defaultQueryHint="Пошук слів"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null"
+            app:searchIcon="@drawable/ic_baseline_search_24"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="4dp">
 
 
-        </LinearLayout>
+        </androidx.appcompat.widget.SearchView>
+
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -66,6 +49,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@null"
+        android:clickable="true"
+        android:tint="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/fragmentContainerViewMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationViewMain"

@@ -11,4 +11,5 @@
     <color name="color_bg_start">#FFFFFF</color>
     <color name="color_bg_end">#ADCBF0</color>
     <color name="color_tool_bar">#2A7485</color>
+    <color name="circle_view">#462A7485</color>
 </resources>

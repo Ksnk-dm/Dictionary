@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="top|left"
-        android:hint="set teext"
+        android:hint="Введіть текст"
         android:inputType="textMultiLine"
         android:lines="5" />
 
@@ -69,6 +69,13 @@
             android:layout_gravity="right"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/ic_baseline_content_copy_24" />
+
+        <ImageButton
+            android:id="@+id/addTranslateImageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
     </LinearLayout>
 
 </LinearLayout>

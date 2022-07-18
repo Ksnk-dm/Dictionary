@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
+import com.ksnk.dictionary.FilterValues
 import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.ui.listFragment.adapter.ListAdapter
 import com.ksnk.dictionary.ui.main.MainActivity
-import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,12 +41,14 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("eeee", listViewModel.getFilterValue().toString())
         listRecyclerView = view.findViewById(R.id.listRecyclerView)
         radioGroupSort = view.findViewById(R.id.rgSort)
 
         radioGroupSort?.setOnCheckedChangeListener { _, i ->
             when (i) {
                 R.id.rbLast -> {
+                    listViewModel.setFilterValue(FilterValues.FILTER_LAST.toString().toInt())
                     listViewModel.getAllDesc().observe(viewLifecycleOwner, Observer {
                         if (it.isNotEmpty()) {
                             wordList.clear()
@@ -61,6 +63,7 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
 
                 }
                 R.id.rbEngAsc -> {
+                    listViewModel.setFilterValue(FilterValues.FILTER_ENG_ASC.value)
                     listViewModel.getAllEngAsc().observe(viewLifecycleOwner, Observer {
                         if (it.isNotEmpty()) {
                             wordList.clear()
@@ -74,6 +77,7 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
                     })
                 }
                 R.id.rbEngDesc -> {
+                    listViewModel.setFilterValue(FilterValues.FILTER_ENG_DESC.toString().toInt())
                     listViewModel.getAllEngDesc().observe(viewLifecycleOwner, Observer {
                         if (it.isNotEmpty()) {
                             wordList.clear()
@@ -87,6 +91,7 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
                     })
                 }
                 R.id.rbUkrAsc -> {
+                    listViewModel.setFilterValue(FilterValues.FILTER_UKR_ASC.toString().toInt())
                     listViewModel.getAllUkrAsc().observe(viewLifecycleOwner, Observer {
                         if (it.isNotEmpty()) {
                             wordList.clear()
@@ -101,6 +106,7 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
 
                 }
                 R.id.rbUkrDesc -> {
+                    listViewModel.setFilterValue(FilterValues.FILTER_UKR_DESC.toString().toInt())
                     listViewModel.getAllUkrDesc().observe(viewLifecycleOwner, Observer {
                         if (it.isNotEmpty()) {
                             wordList.clear()
