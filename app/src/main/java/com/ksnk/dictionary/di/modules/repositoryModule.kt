@@ -1,4 +1,4 @@
-package com.ksnk.dictionary.di
+package com.ksnk.dictionary.di.modules
 
 import com.ksnk.dictionary.data.repository.WordRepository
 import org.koin.dsl.module

@@ -6,13 +6,16 @@ import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationBarView
@@ -26,6 +29,9 @@ import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.ui.listFragment.ListWordFragment
 import com.ksnk.dictionary.ui.settingsFragment.SettingsFragment
 import com.ksnk.dictionary.ui.translateFragment.TranslateFragment
+import com.ksnk.dictionary.utils.changeFragment
+import com.ksnk.dictionary.utils.showToast
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,14 +50,30 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private var bottomNavView: BottomNavigationView? = null
     private var addDialog: AlertDialog? = null
     private var floatingActionButtonMain: FloatingActionButton? = null
+    private var toolBarMain: MaterialToolbar? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        checkTheme()
         init()
         setListeners()
         checkTextSpeechSupportLang()
+    }
+
+    private fun checkTheme() {
+        when (mainViewModel.getTheme()) {
+            0 -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            1 -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            2 -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
 
 
@@ -60,12 +82,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             if (i == TextToSpeech.SUCCESS) {
                 val lang = textToSpeech!!.setLanguage(Locale.US)
                 if (lang == TextToSpeech.LANG_MISSING_DATA || lang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Language is not supported",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast("Language is not supported")
                 }
             }
         }
@@ -74,6 +91,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun init() {
         searchView = findViewById(R.id.word_search)
         bottomNavView = findViewById(R.id.bottomNavigationViewMain)
+        toolBarMain = findViewById(R.id.materialToolbarMain)
         //  imageButtonAdd = findViewById(R.id.imageButtonAdd)
         floatingActionButtonMain = findViewById(R.id.floatingActionButtonMain)
     }
@@ -111,7 +129,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 }
                 addDialog?.dismiss()
             } else {
-                Toast.makeText(this, "Please enter both field", Toast.LENGTH_SHORT).show()
+                showToast("Please enter both field")
             }
         }
         addDialog?.cancelBtnID?.setOnClickListener {
@@ -232,12 +250,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         //  super.onBackPressed()
     }
 
-    private fun changeFragment(fragment: Fragment) {
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentContainerViewMain, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
+//    private fun changeFragment(fragment: Fragment) {
+//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.fragmentContainerViewMain, fragment)
+//        transaction.addToBackStack(null)
+//        transaction.commit()
+//    }
 
     private var bottomNavViewOnItemSelectListener = NavigationBarView.OnItemSelectedListener {
         when (it.itemId) {
@@ -245,16 +263,19 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 val fragment: Fragment = TranslateFragment()
                 changeFragment(fragment)
                 floatingActionButtonMain?.hide()
+                toolBarMain?.visibility = View.GONE
             }
             R.id.list_item -> {
                 val fragment: Fragment = ListWordFragment().newInstance()
                 changeFragment(fragment)
                 floatingActionButtonMain?.show()
+                toolBarMain?.visibility = View.VISIBLE
             }
             R.id.setting_item -> {
                 val fragment: Fragment = SettingsFragment()
                 changeFragment(fragment)
                 floatingActionButtonMain?.hide()
+                toolBarMain?.visibility = View.GONE
             }
         }
         return@OnItemSelectedListener true

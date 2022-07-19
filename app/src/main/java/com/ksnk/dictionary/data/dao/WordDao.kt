@@ -33,4 +33,7 @@ interface WordDao {
 
     @Query("SELECT * FROM wordTable ORDER BY wordID DESC ")
     fun getAllDesc(): LiveData<List<Word>>
+
+    @Query("DELETE FROM wordTable")
+    fun deleteAll()
 }

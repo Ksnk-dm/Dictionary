@@ -12,7 +12,7 @@ class WordRepository(private val wordDao: WordDao) {
         wordDao.insertWord(word)
     }
 
-    fun deleteWord(word: Word){
+    fun deleteWord(word: Word) {
         wordDao.deleteWord(word)
     }
 
@@ -24,23 +24,27 @@ class WordRepository(private val wordDao: WordDao) {
         return wordDao.searchDatabase(searchQuery)
     }
 
-    fun getAllEngAsc():LiveData<List<Word>>{
+    fun getAllEngAsc(): LiveData<List<Word>> {
         return wordDao.getAllEngAsc()
     }
 
-    fun getAllUrkAsc():LiveData<List<Word>>{
+    fun getAllUrkAsc(): LiveData<List<Word>> {
         return wordDao.getAllUkrAsc()
     }
 
-    fun getAllEngDesc():LiveData<List<Word>>{
+    fun getAllEngDesc(): LiveData<List<Word>> {
         return wordDao.getAllEngDesc()
     }
 
-    fun getAllUkrDesc():LiveData<List<Word>>{
+    fun getAllUkrDesc(): LiveData<List<Word>> {
         return wordDao.getAllUrkDesc()
     }
 
-    fun getAllDesc():LiveData<List<Word>>{
+    fun getAllDesc(): LiveData<List<Word>> {
         return wordDao.getAllDesc()
+    }
+
+    fun deleteAll() {
+        wordDao.deleteAll()
     }
 }

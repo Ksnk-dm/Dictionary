@@ -17,18 +17,7 @@ class ListAdapter(private val wordList: List<Word>, context: Context) :
     init {
         textToSpeech = TextToSpeech(context) { i ->
             if (i == TextToSpeech.SUCCESS) {
-                val lang = textToSpeech!!.setLanguage(Locale.UK)
-                if (lang == TextToSpeech.LANG_MISSING_DATA || lang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(
-                        context,
-                        "Language is not supported",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                } else {
-                    Toast.makeText(context, "Language Supported", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                textToSpeech!!.language = Locale.UK
             }
         }
     }

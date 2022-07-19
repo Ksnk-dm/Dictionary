@@ -8,8 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="wb_text">#000000</color>
-    <color name="color_bg_start">#FFFFFF</color>
-    <color name="color_bg_end">#ADCBF0</color>
-    <color name="color_tool_bar">#2A7485</color>
+    <color name="color_bg_start">#C5E5F1</color>
+    <color name="color_bg_end">#ACCDF6</color>
+    <color name="color_tool_bar">#2196F3</color>
     <color name="circle_view">#462A7485</color>
+    <color name="card_view_color">#FFFFFFFF</color>
+    <color name="bg_settings">#2196F3</color>
 </resources>

@@ -8,7 +8,7 @@
     tools:context=".ui.main.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar"
+        android:id="@+id/materialToolbarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_tool_bar"
@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbarMain" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButtonMain"
@@ -68,6 +68,8 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:background="@color/color_tool_bar"
+        app:itemIconTint="@drawable/bottom_nav_color"
+        app:itemTextColor="@drawable/bottom_nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

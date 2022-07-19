@@ -1,4 +1,4 @@
-package com.ksnk.dictionary.di
+package com.ksnk.dictionary.di.modules
 
 import android.app.Application
 import androidx.room.Room

@@ -1,7 +1,7 @@
 package com.ksnk.dictionary.ui.listFragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
-import com.ksnk.dictionary.FilterValues
+import com.ksnk.dictionary.enums.FilterValues
 import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
@@ -39,90 +39,82 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
         return inflater.inflate(R.layout.list_fragment, container, false);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateUI(it: List<Word>) {
+        if (it.isNotEmpty()) {
+            wordList.clear()
+            wordList.addAll(it)
+            listAdapter.notifyDataSetChanged()
+        } else {
+            wordList.clear()
+            listAdapter.notifyDataSetChanged()
+
+        }
+    }
+
+    private fun loadAndSetLast() {
+        listViewModel.setFilterValue(FilterValues.FILTER_LAST.value)
+        listViewModel.getAllDesc().observe(viewLifecycleOwner, Observer {
+            updateUI(it)
+        })
+    }
+
+    private fun loadAndSetEngAsc() {
+        listViewModel.setFilterValue(FilterValues.FILTER_ENG_ASC.value)
+        listViewModel.getAllEngAsc().observe(viewLifecycleOwner, Observer {
+            updateUI(it)
+        })
+    }
+
+    private fun loadAndSetEngDesc() {
+        listViewModel.setFilterValue(FilterValues.FILTER_ENG_DESC.value)
+        listViewModel.getAllEngDesc().observe(viewLifecycleOwner, Observer {
+            updateUI(it)
+        })
+    }
+
+    private fun loadAndSetUkrAsc() {
+        listViewModel.setFilterValue(FilterValues.FILTER_UKR_ASC.value)
+        listViewModel.getAllUkrAsc().observe(viewLifecycleOwner, Observer {
+            updateUI(it)
+        })
+    }
+
+    private fun loadAndSetUkrDesc() {
+        listViewModel.setFilterValue(FilterValues.FILTER_UKR_DESC.value)
+        listViewModel.getAllUkrDesc().observe(viewLifecycleOwner, Observer {
+            updateUI(it)
+        })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("eeee", listViewModel.getFilterValue().toString())
         listRecyclerView = view.findViewById(R.id.listRecyclerView)
         radioGroupSort = view.findViewById(R.id.rgSort)
-
-        radioGroupSort?.setOnCheckedChangeListener { _, i ->
-            when (i) {
-                R.id.rbLast -> {
-                    listViewModel.setFilterValue(FilterValues.FILTER_LAST.toString().toInt())
-                    listViewModel.getAllDesc().observe(viewLifecycleOwner, Observer {
-                        if (it.isNotEmpty()) {
-                            wordList.clear()
-                            wordList.addAll(it)
-                            listAdapter.notifyDataSetChanged()
-                        } else {
-                            wordList.clear()
-                            listAdapter.notifyDataSetChanged()
-
-                        }
-                    })
-
-                }
-                R.id.rbEngAsc -> {
-                    listViewModel.setFilterValue(FilterValues.FILTER_ENG_ASC.value)
-                    listViewModel.getAllEngAsc().observe(viewLifecycleOwner, Observer {
-                        if (it.isNotEmpty()) {
-                            wordList.clear()
-                            wordList.addAll(it)
-                            listAdapter.notifyDataSetChanged()
-                        } else {
-                            wordList.clear()
-                            listAdapter.notifyDataSetChanged()
-
-                        }
-                    })
-                }
-                R.id.rbEngDesc -> {
-                    listViewModel.setFilterValue(FilterValues.FILTER_ENG_DESC.toString().toInt())
-                    listViewModel.getAllEngDesc().observe(viewLifecycleOwner, Observer {
-                        if (it.isNotEmpty()) {
-                            wordList.clear()
-                            wordList.addAll(it)
-                            listAdapter.notifyDataSetChanged()
-                        } else {
-                            wordList.clear()
-                            listAdapter.notifyDataSetChanged()
-
-                        }
-                    })
-                }
-                R.id.rbUkrAsc -> {
-                    listViewModel.setFilterValue(FilterValues.FILTER_UKR_ASC.toString().toInt())
-                    listViewModel.getAllUkrAsc().observe(viewLifecycleOwner, Observer {
-                        if (it.isNotEmpty()) {
-                            wordList.clear()
-                            wordList.addAll(it)
-                            listAdapter.notifyDataSetChanged()
-                        } else {
-                            wordList.clear()
-                            listAdapter.notifyDataSetChanged()
-
-                        }
-                    })
-
-                }
-                R.id.rbUkrDesc -> {
-                    listViewModel.setFilterValue(FilterValues.FILTER_UKR_DESC.toString().toInt())
-                    listViewModel.getAllUkrDesc().observe(viewLifecycleOwner, Observer {
-                        if (it.isNotEmpty()) {
-                            wordList.clear()
-                            wordList.addAll(it)
-                            listAdapter.notifyDataSetChanged()
-                        } else {
-                            wordList.clear()
-                            listAdapter.notifyDataSetChanged()
-
-                        }
-                    })
-                }
-
-
+        when (listViewModel.getFilterValue()) {
+            0 -> {
+                radioGroupSort?.check(R.id.rbLast)
+                loadAndSetLast()
+            }
+            1 -> {
+                radioGroupSort?.check(R.id.rbEngAsc)
+                loadAndSetEngAsc()
+            }
+            2 -> {
+                radioGroupSort?.check(R.id.rbEngDesc)
+                loadAndSetEngDesc()
+            }
+            3 -> {
+                radioGroupSort?.check(R.id.rbUkrAsc)
+                loadAndSetUkrAsc()
+            }
+            4 -> {
+                radioGroupSort?.check(R.id.rbUkrDesc)
+                loadAndSetUkrDesc()
             }
         }
+
+
 
 
         wordList = ArrayList()
@@ -131,18 +123,25 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
         listRecyclerView?.adapter = listAdapter
         listRecyclerView?.layoutManager = mGridLayoutManager
         listRecyclerView?.setHasFixedSize(true)
-        listViewModel.getAllDesc().observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
-                wordList.clear()
-                wordList.addAll(it)
-                listAdapter.notifyDataSetChanged()
-            } else {
-                wordList.clear()
-                listAdapter.notifyDataSetChanged()
-
+        radioGroupSort?.setOnCheckedChangeListener { _, i ->
+            when (i) {
+                R.id.rbLast -> {
+                    loadAndSetLast()
+                }
+                R.id.rbEngAsc -> {
+                    loadAndSetEngAsc()
+                }
+                R.id.rbEngDesc -> {
+                    loadAndSetEngDesc()
+                }
+                R.id.rbUkrAsc -> {
+                    loadAndSetUkrAsc()
+                }
+                R.id.rbUkrDesc -> {
+                    loadAndSetUkrDesc()
+                }
             }
-        })
-
+        }
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -199,19 +198,9 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
     private fun searchDatabase(query: String) {
         val searchQuery = "%$query%"
         listViewModel.searchDatabase(searchQuery).observe(this) {
-            Log.d("ddddd", it.toString())
-            if (it.isNotEmpty()) {
-                wordList.clear()
-                wordList.addAll(it)
-                listAdapter.notifyDataSetChanged()
-            } else {
-                wordList.clear()
-                listAdapter.notifyDataSetChanged()
-
-
+        updateUI(it)
             }
         }
-    }
 
     companion object
 

@@ -3,11 +3,12 @@ package com.ksnk.dictionary.ui.listFragment
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.ksnk.dictionary.FilterValues
 import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.data.repository.WordRepository
+import com.ksnk.dictionary.utils.Contains
 
 class ListViewModel(private val wordRepository: WordRepository, private val sharedPreferences: SharedPreferences) : ViewModel() {
+
     fun getAllWords(): LiveData<List<Word>> = wordRepository.getAllWords()
 
     fun addWord(userAdd: Word) {
@@ -33,10 +34,10 @@ class ListViewModel(private val wordRepository: WordRepository, private val shar
     fun getAllDesc(): LiveData<List<Word>> = wordRepository.getAllDesc()
 
     fun setFilterValue(value: Int){
-        sharedPreferences.edit().putInt("filter", value).apply()
+        sharedPreferences.edit().putInt(Contains().filter, value).apply()
     }
 
     fun getFilterValue():Int{
-        return sharedPreferences.getInt("filter", 0)
+        return sharedPreferences.getInt(Contains().filter, 0)
     }
 }
