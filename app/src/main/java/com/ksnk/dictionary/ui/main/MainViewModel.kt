@@ -24,4 +24,12 @@ class MainViewModel(private val wordRepository: WordRepository, private val shar
     fun getTheme(): Int {
         return sharedPreferences.getInt("theme", 0)
     }
+
+    fun getFragmentId():Int{
+        return sharedPreferences.getInt("fragment_id", 0)
+    }
+
+    fun setFragmentId(id:Int){
+        sharedPreferences.edit().putInt("fragment_id", id).apply()
+    }
 }

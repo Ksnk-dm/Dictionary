@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Dictionary UA-UK</string>
+    <string name="lang_not_support">Language is not supported</string>
+    <string name="enter_both">Please enter both field</string>
+    <string name="deleted">Deleted </string>
+    <string name="Undo">Undo</string>
+    <string name="add_in_dictionary">Add in dictionary</string>
 </resources>

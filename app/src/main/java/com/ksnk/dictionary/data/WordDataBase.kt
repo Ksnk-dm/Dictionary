@@ -6,6 +6,6 @@ import com.ksnk.dictionary.data.dao.WordDao
 import com.ksnk.dictionary.data.entity.Word
 
 @Database(entities = [Word::class], version = 1, exportSchema = false)
-abstract class WordDataBase:RoomDatabase() {
+abstract class WordDataBase : RoomDatabase() {
     abstract val wordDao: WordDao
 }

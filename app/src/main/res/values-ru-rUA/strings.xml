@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Словник UA-UK</string>
+    <string name="lang_not_support">Мова не підтримується</string>
+    <string name="enter_both">Заповніть обидва поля</string>
+    <string name="deleted">Видалено </string>
+    <string name="Undo">Відхилити</string>
+    <string name="add_in_dictionary">Додано до словника</string>
 </resources>

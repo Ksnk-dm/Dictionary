@@ -10,7 +10,7 @@ val preferencesModule = module {
     single { provideSettingsPreferences(androidApplication()) }
 }
 
-private const val PREFERENCES_FILE_KEY = "com.example.settings_preferences"
+private const val PREFERENCES_FILE_KEY = "prefs_dictionary"
 
 private fun provideSettingsPreferences(app: Application): SharedPreferences =
     app.getSharedPreferences(PREFERENCES_FILE_KEY, Context.MODE_PRIVATE)

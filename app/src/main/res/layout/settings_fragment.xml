@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
@@ -36,6 +37,22 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <EditText
+                    android:id="@+id/nameEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|center_horizontal"
+                    android:layout_marginLeft="45dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:foregroundGravity="center"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:text="Name"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/nameTextView"
                     android:layout_width="wrap_content"
@@ -45,7 +62,9 @@
                     android:text="Name"
                     android:textColor="#fff"
                     android:textSize="23dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/imageButtonEditName"
@@ -93,7 +112,6 @@
                         android:id="@+id/countWortTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100"
                         android:textColor="@color/bg_settings"
                         android:textSize="27dp"
                         android:textStyle="bold" />
