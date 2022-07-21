@@ -3,16 +3,13 @@ package com.ksnk.dictionary.ui.translateFragment
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
@@ -20,9 +17,7 @@ import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
-import com.ksnk.dictionary.ui.settingsFragment.SettingsViewModel
 import com.ksnk.dictionary.utils.showToast
-import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,10 +45,20 @@ class TranslateFragment : Fragment(), AdapterView.OnItemSelectedListener {
         return inflater.inflate(R.layout.translate_fragment, container, false);
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun init(view: View) {
         spinnerFirst = view.findViewById(R.id.spinnerFirst)
         saveImageButton = view.findViewById(R.id.addTranslateImageButton)
+        spinnerSecond = view.findViewById(R.id.spinnerSecond)
+        editTextFirst = view.findViewById(R.id.editTextFirst)
+        imageButtonClear = view.findViewById(R.id.imageButtonClear)
+        imageButtonCopy = view.findViewById(R.id.imageButtonCopy)
+        editTextFirst?.addTextChangedListener(textWatcher)
+        editTextSecond = view.findViewById(R.id.editTextSecond)
+        imageButtonSwitch = view.findViewById(R.id.imageButtonSwitch)
+        spinnerFirst?.onItemSelectedListener = this
+    }
+
+    private fun setListeners() {
         saveImageButton?.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 translateViewModel.addWord(
@@ -64,51 +69,41 @@ class TranslateFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     )
                 )
             }
-            showToast("Додано до словника")
+            showToast(getString(R.string.add_in_dictionary))
         }
-        spinnerFirst?.onItemSelectedListener = this
-        spinnerSecond = view.findViewById(R.id.spinnerSecond)
-        editTextFirst = view.findViewById(R.id.editTextFirst)
-        imageButtonClear = view.findViewById(R.id.imageButtonClear)
-
-        imageButtonCopy = view.findViewById(R.id.imageButtonCopy)
-        editTextFirst?.addTextChangedListener(textWatcher)
-        editTextSecond = view.findViewById(R.id.editTextSecond)
-
-
         imageButtonClear?.setOnClickListener {
             editTextFirst?.text?.clear()
             editTextSecond?.text?.clear()
         }
-
         imageButtonCopy?.setOnClickListener {
             val myClipboard =
                 context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val myClip: ClipData = ClipData.newPlainText("Text", editTextSecond?.text.toString())
             myClipboard.setPrimaryClip(myClip)
-            showToast("Текст скопійовано")
+            showToast(getString(R.string.add_in_dictionary))
         }
-        imageButtonSwitch = view.findViewById(R.id.imageButtonSwitch)
+    }
+
+    private fun setTranslator() {
         val translationConfigs = TranslatorOptions.Builder()
             .setSourceLanguage(TranslateLanguage.ENGLISH)
             .setTargetLanguage(TranslateLanguage.UKRAINIAN)
             .build()
         translator = Translation.getClient(translationConfigs)
 
-        val aa =
+        val arrayAdapter =
             ArrayAdapter(requireActivity().applicationContext, R.layout.spinner_item, languages)
-        val aa2 = ArrayAdapter(
+        val arrayAdapter1 = ArrayAdapter(
             requireActivity().applicationContext,
             R.layout.spinner_item,
             languagesTranslate
         )
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerFirst!!.adapter = aa
-        spinnerSecond!!.adapter = aa2
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerFirst!!.adapter = arrayAdapter
+        spinnerSecond!!.adapter = arrayAdapter1
 
         imageButtonSwitch?.setOnClickListener {
-            if (spinnerFirst?.adapter == aa) {
-
+            if (spinnerFirst?.adapter == arrayAdapter) {
                 val translationConfigs = TranslatorOptions.Builder()
                     .setSourceLanguage(TranslateLanguage.UKRAINIAN)
                     .setTargetLanguage(TranslateLanguage.ENGLISH)
@@ -120,8 +115,8 @@ class TranslateFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     }
                     ?.addOnFailureListener {
                     }
-                spinnerFirst!!.adapter = aa2
-                spinnerSecond!!.adapter = aa
+                spinnerFirst!!.adapter = arrayAdapter1
+                spinnerSecond!!.adapter = arrayAdapter
                 saveImageButton?.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
                         translateViewModel.addWord(
@@ -132,11 +127,11 @@ class TranslateFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             )
                         )
                     }
-                    showToast("Додано до словника")
+                    showToast(getString(R.string.add_in_dictionary))
                 }
             } else {
-                spinnerFirst!!.adapter = aa
-                spinnerSecond!!.adapter = aa2
+                spinnerFirst!!.adapter = arrayAdapter
+                spinnerSecond!!.adapter = arrayAdapter1
                 saveImageButton?.setOnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
                         translateViewModel.addWord(
@@ -147,7 +142,7 @@ class TranslateFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             )
                         )
                     }
-                    showToast("Додано до словника")
+                    showToast(getString(R.string.add_in_dictionary))
                 }
 
                 val translationConfigs = TranslatorOptions.Builder()
@@ -157,8 +152,13 @@ class TranslateFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 translator = Translation.getClient(translationConfigs)
             }
         }
+    }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init(view)
+        setListeners()
+        setTranslator()
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

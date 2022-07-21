@@ -1,6 +1,5 @@
 package com.ksnk.dictionary.ui.main
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.Editable
@@ -8,13 +7,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,15 +21,14 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.data.entity.Word
+import com.ksnk.dictionary.listeners.FragmentSettingListener
 import com.ksnk.dictionary.ui.listFragment.ListWordFragment
 import com.ksnk.dictionary.ui.settingsFragment.SettingsFragment
 import com.ksnk.dictionary.ui.translateFragment.TranslateFragment
 import com.ksnk.dictionary.utils.changeFragment
 import com.ksnk.dictionary.utils.showToast
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.addword.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +40,6 @@ import java.util.*
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private var translator: Translator? = null
     private val mainViewModel: MainViewModel by viewModel()
-    private var imageButtonAdd: ImageButton? = null
     private var textToSpeech: TextToSpeech? = null
     private var searchView: SearchView? = null
     private var fragmentSettingListener: FragmentSettingListener? = null
@@ -54,12 +50,21 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.color_tool_bar);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkTheme()
         init()
+        setVisible()
         setListeners()
         checkTextSpeechSupportLang()
+    }
+
+    private fun setVisible() {
+        if (mainViewModel.getFragmentId() == 2) {
+            floatingActionButtonMain?.visibility = View.GONE
+            toolBarMain?.visibility = View.GONE
+        }
     }
 
     private fun checkTheme() {
@@ -82,7 +87,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             if (i == TextToSpeech.SUCCESS) {
                 val lang = textToSpeech!!.setLanguage(Locale.US)
                 if (lang == TextToSpeech.LANG_MISSING_DATA || lang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    showToast("Language is not supported")
+                    showToast(getString(R.string.lang_not_support))
                 }
             }
         }
@@ -92,7 +97,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         searchView = findViewById(R.id.word_search)
         bottomNavView = findViewById(R.id.bottomNavigationViewMain)
         toolBarMain = findViewById(R.id.materialToolbarMain)
-        //  imageButtonAdd = findViewById(R.id.imageButtonAdd)
         floatingActionButtonMain = findViewById(R.id.floatingActionButtonMain)
     }
 
@@ -100,7 +104,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         bottomNavView?.setOnItemSelectedListener(bottomNavViewOnItemSelectListener)
         searchView?.setOnQueryTextListener(this)
         floatingActionButtonMain?.setOnClickListener { showDialogBox() }
-        // imageButtonAdd?.setOnClickListener { showDialogBox() }
     }
 
 
@@ -129,7 +132,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                 }
                 addDialog?.dismiss()
             } else {
-                showToast("Please enter both field")
+                showToast(getString(R.string.enter_both))
             }
         }
         addDialog?.cancelBtnID?.setOnClickListener {
@@ -250,29 +253,25 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         //  super.onBackPressed()
     }
 
-//    private fun changeFragment(fragment: Fragment) {
-//        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.fragmentContainerViewMain, fragment)
-//        transaction.addToBackStack(null)
-//        transaction.commit()
-//    }
-
     private var bottomNavViewOnItemSelectListener = NavigationBarView.OnItemSelectedListener {
         when (it.itemId) {
             R.id.translate_item -> {
                 val fragment: Fragment = TranslateFragment()
+                mainViewModel.setFragmentId(0)
                 changeFragment(fragment)
                 floatingActionButtonMain?.hide()
                 toolBarMain?.visibility = View.GONE
             }
             R.id.list_item -> {
                 val fragment: Fragment = ListWordFragment().newInstance()
+                mainViewModel.setFragmentId(1)
                 changeFragment(fragment)
                 floatingActionButtonMain?.show()
                 toolBarMain?.visibility = View.VISIBLE
             }
             R.id.setting_item -> {
                 val fragment: Fragment = SettingsFragment()
+                mainViewModel.setFragmentId(2)
                 changeFragment(fragment)
                 floatingActionButtonMain?.hide()
                 toolBarMain?.visibility = View.GONE

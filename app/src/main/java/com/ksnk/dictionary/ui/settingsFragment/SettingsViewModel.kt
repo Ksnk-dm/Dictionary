@@ -1,7 +1,9 @@
 package com.ksnk.dictionary.ui.settingsFragment
 
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.ksnk.dictionary.data.entity.Word
 import com.ksnk.dictionary.data.repository.WordRepository
 import org.koin.core.qualifier.named
 import org.koin.java.KoinJavaComponent.inject
@@ -28,5 +30,9 @@ class SettingsViewModel(
 
     fun deleteAllWords() {
         wordRepository.deleteAll()
+    }
+
+    fun getAll(): LiveData<List<Word>> {
+       return wordRepository.getAllEngAsc()
     }
 }

@@ -87,10 +87,43 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
         })
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun init(view: View) {
         listRecyclerView = view.findViewById(R.id.listRecyclerView)
         radioGroupSort = view.findViewById(R.id.rgSort)
+    }
+
+    private fun initRecycler() {
+        wordList = ArrayList()
+        mGridLayoutManager = GridLayoutManager(activity, 1)
+        listAdapter = ListAdapter(wordList, requireContext())
+        listRecyclerView?.adapter = listAdapter
+        listRecyclerView?.layoutManager = mGridLayoutManager
+        listRecyclerView?.setHasFixedSize(true)
+    }
+
+    private fun initListeners() {
+        radioGroupSort?.setOnCheckedChangeListener { _, i ->
+            when (i) {
+                R.id.rbLast -> {
+                    loadAndSetLast()
+                }
+                R.id.rbEngAsc -> {
+                    loadAndSetEngAsc()
+                }
+                R.id.rbEngDesc -> {
+                    loadAndSetEngDesc()
+                }
+                R.id.rbUkrAsc -> {
+                    loadAndSetUkrAsc()
+                }
+                R.id.rbUkrDesc -> {
+                    loadAndSetUkrDesc()
+                }
+            }
+        }
+    }
+
+    private fun setRadioButtonCheck() {
         when (listViewModel.getFilterValue()) {
             0 -> {
                 radioGroupSort?.check(R.id.rbLast)
@@ -113,77 +146,15 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
                 loadAndSetUkrDesc()
             }
         }
+    }
 
-
-
-
-        wordList = ArrayList()
-        mGridLayoutManager = GridLayoutManager(activity, 1)
-        listAdapter = ListAdapter(wordList, requireContext())
-        listRecyclerView?.adapter = listAdapter
-        listRecyclerView?.layoutManager = mGridLayoutManager
-        listRecyclerView?.setHasFixedSize(true)
-        radioGroupSort?.setOnCheckedChangeListener { _, i ->
-            when (i) {
-                R.id.rbLast -> {
-                    loadAndSetLast()
-                }
-                R.id.rbEngAsc -> {
-                    loadAndSetEngAsc()
-                }
-                R.id.rbEngDesc -> {
-                    loadAndSetEngDesc()
-                }
-                R.id.rbUkrAsc -> {
-                    loadAndSetUkrAsc()
-                }
-                R.id.rbUkrDesc -> {
-                    loadAndSetUkrDesc()
-                }
-            }
-        }
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                val deletedWord: Word =
-                    wordList[viewHolder.adapterPosition]
-                val position = viewHolder.adapterPosition
-                wordList.removeAt(viewHolder.adapterPosition)
-                CoroutineScope(Dispatchers.IO).launch {
-                    listViewModel.deleteWord(
-                        deletedWord
-                    )
-                }
-                listAdapter.notifyItemRemoved(viewHolder.adapterPosition)
-
-                Snackbar.make(
-                    listRecyclerView!!,
-                    "Deleted " + deletedWord.wordEng,
-                    Snackbar.LENGTH_LONG
-                )
-                    .setAction(
-                        "Undo",
-                        View.OnClickListener {
-                            wordList.add(position, deletedWord)
-                            CoroutineScope(Dispatchers.IO).launch {
-                                listViewModel.addWord(
-                                    deletedWord
-                                )
-                            }
-                            listAdapter.notifyItemInserted(position)
-                        }).show()
-            }
-        }).attachToRecyclerView(listRecyclerView)
-
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init(view)
+        setRadioButtonCheck()
+        initRecycler()
+        initListeners()
+        initItemSwipe()
     }
 
     override fun search(textSearch: String?) {
@@ -198,9 +169,53 @@ class ListWordFragment : Fragment(), FragmentSettingListener {
     private fun searchDatabase(query: String) {
         val searchQuery = "%$query%"
         listViewModel.searchDatabase(searchQuery).observe(this) {
-        updateUI(it)
-            }
+            updateUI(it)
         }
+    }
+
+    private fun initItemSwipe() {
+        ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                    val deletedWord: Word =
+                        wordList[viewHolder.adapterPosition]
+                    val position = viewHolder.adapterPosition
+                    wordList.removeAt(viewHolder.adapterPosition)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        listViewModel.deleteWord(
+                            deletedWord
+                        )
+                    }
+                    listAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+
+                    Snackbar.make(
+                        listRecyclerView!!,
+                        getString(R.string.deleted) + deletedWord.wordEng,
+                        Snackbar.LENGTH_LONG
+                    )
+                        .setAction(
+                            getString(R.string.Undo),
+                            View.OnClickListener {
+                                wordList.add(position, deletedWord)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    listViewModel.addWord(
+                                        deletedWord
+                                    )
+                                }
+                                listAdapter.notifyItemInserted(position)
+                            }).show()
+                }
+            }).attachToRecyclerView(listRecyclerView)
+    }
 
     companion object
 
