@@ -4,13 +4,13 @@
     <item
         android:id="@+id/list_item"
         android:icon="@drawable/ic_baseline_format_list_bulleted_24"
-        android:title="Словник" />
+        android:title="@string/item_dictionary" />
     <item
         android:id="@+id/translate_item"
         android:icon="@drawable/ic_baseline_translate_24"
-        android:title="Перекладач" />
+        android:title="@string/item_translate" />
     <item
         android:id="@+id/setting_item"
         android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Налаштування" />
+        android:title="@string/item_set" />
 </menu>

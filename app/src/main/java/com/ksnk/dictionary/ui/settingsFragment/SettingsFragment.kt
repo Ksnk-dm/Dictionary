@@ -9,13 +9,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.ksnk.dictionary.R
 import com.ksnk.dictionary.enums.ThemeValues
-import kotlinx.android.synthetic.main.name_profile.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

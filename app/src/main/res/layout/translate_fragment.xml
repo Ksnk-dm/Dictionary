@@ -41,7 +41,7 @@
             android:layout_height="200dp"
             android:backgroundTint="@android:color/transparent"
             android:gravity="top|left"
-            android:hint="Введіть текст"
+            android:hint="@string/set_text"
             android:inputType="textMultiLine"
             android:lines="5" />
     </RelativeLayout>

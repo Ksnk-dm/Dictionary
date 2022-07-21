@@ -104,7 +104,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Додано слів"
+                        android:text="@string/words"
                         android:textColor="@color/wb_text"
                         android:textSize="17dp" />
 
@@ -129,7 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
-        android:text="Налаштування теми"
+        android:text="@string/set_theme"
         android:textColor="@color/wb_text" />
 
     <RelativeLayout
@@ -152,19 +152,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:checked="false"
-                android:text="Авто" />
+                android:text="@string/auto" />
 
             <RadioButton
                 android:id="@+id/rbDark"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Темна" />
+                android:text="@string/dark" />
 
             <RadioButton
                 android:id="@+id/rbLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Світла" />
+                android:text="@string/light" />
         </RadioGroup>
     </RelativeLayout>
 
@@ -173,7 +173,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
-        android:text="Налаштування словника"
+        android:text="@string/dict_set"
         android:textColor="@color/wb_text" />
 
     <RelativeLayout
@@ -197,7 +197,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="Очистити словник"
+                android:text="@string/clear"
                 android:textColor="@color/wb_text" />
 
             <ImageButton

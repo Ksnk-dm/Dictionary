@@ -5,4 +5,24 @@
     <string name="deleted">Deleted </string>
     <string name="Undo">Undo</string>
     <string name="add_in_dictionary">Add in dictionary</string>
+    <string name="hint_add_eng">Enter eng word</string>
+    <string name="hint_add_ukr">Enter UKR word</string>
+    <string name="title">Enter Word</string>
+    <string name="rb_hand">Manually</string>
+    <string name="rb_eng">From Eng</string>
+    <string name="rb_ukr">From Ukr</string>
+    <string name="button_add">Add word</string>
+    <string name="button_cancel">Cancel </string>
+    <string name="search_hint">Search</string>
+    <string name="item_dictionary">Dictionary</string>
+    <string name="item_translate">Translate</string>
+    <string name="item_set">Settings</string>
+    <string name="words">Added words</string>
+    <string name="set_theme">Themes</string>
+    <string name="auto">System theme</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="dict_set">Dictionary settings</string>
+    <string name="clear">Clear dictionary</string>
+    <string name="set_text">Set Text</string>
 </resources>

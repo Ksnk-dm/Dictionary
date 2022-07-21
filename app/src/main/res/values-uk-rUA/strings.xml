@@ -6,4 +6,24 @@
     <string name="deleted">Видалено </string>
     <string name="Undo">Відхилити</string>
     <string name="add_in_dictionary">Додано до словника</string>
+    <string name="hint_add_eng">Введіть англійське слово</string>
+    <string name="hint_add_ukr">Введіть українське слово</string>
+    <string name="title">Введіть слова</string>
+    <string name="rb_hand">Ручний</string>
+    <string name="rb_eng">З англійського</string>
+    <string name="rb_ukr">З українського</string>
+    <string name="button_add">Додати слово</string>
+    <string name="button_cancel">Відхилити </string>
+    <string name="search_hint">Пошук слів</string>
+    <string name="item_dictionary">Словник</string>
+    <string name="item_translate">Перекладач</string>
+    <string name="item_set">Налаштування</string>
+    <string name="words">Додано слів</string>
+    <string name="set_theme">Налаштування теми</string>
+    <string name="auto">Тема системи</string>
+    <string name="dark">Темна</string>
+    <string name="light">Світла</string>
+    <string name="dict_set">Налаштування словника</string>
+    <string name="clear">Очистити словник</string>
+    <string name="set_text">Введіть текст</string>
 </resources>
